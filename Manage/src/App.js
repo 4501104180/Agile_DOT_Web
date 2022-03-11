@@ -1,8 +1,18 @@
-import React from 'react';
+// components
+// import LoadingScreen from './components/LoadingScreen';
+// hooks
+// import useAuth from './hooks/useAuth';
+// 
+import Router from './routes';
+import ThemeConfig from './theme';
 
 const App = () => {
+  // const { isInitialized } = useAuth();
   return (
-    <div>Manage akjscjaksncjkasc</div>
+    <ThemeConfig>
+      <Router />
+      {/* {isInitialized ? <Router /> : <LoadingScreen />} */}
+    </ThemeConfig>
   );
 };
 
