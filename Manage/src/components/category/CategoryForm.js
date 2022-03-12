@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { Grid, Stack, Card, Typography, TextField, FormHelperText } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { FormikProvider, Form, useFormik } from 'formik';
@@ -15,7 +14,6 @@ import { createCategorySchema } from '../../utils/yupSchemas';
 
 const CategoryForm = () => {
     // const dispatch = useDispatch();
-    const descriptionRef = useRef(null);
     const formik = useFormik({
         initialValues: {
             title: '',

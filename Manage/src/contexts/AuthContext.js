@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { createContext, useReducer } from 'react';
+import { createContext } from 'react';
 // import { createContext, useEffect, useReducer } from 'react';
 // import { useDispatch } from 'react-redux';
 
@@ -13,16 +13,16 @@ const initialState = {
     isInitialized: false
 };
 
-const handlers = {
-    INITIALIZE: (state, action) => {
-        return {
-            ...state,
-            isInitialized: true
-        }
-    }
-};
+// const handlers = {
+//     INITIALIZE: (state, action) => {
+//         return {
+//             ...state,
+//             isInitialized: true
+//         }
+//     }
+// };
 
-const reducer = (state, action) => handlers[action.type] ? handlers[action.type](state, action) : state;
+// const reducer = (state, action) => handlers[action.type] ? handlers[action.type](state, action) : state;
 
 const propTypes = {
     children: PropTypes.node
@@ -33,7 +33,7 @@ const AuthContext = createContext({
 });
 
 const AuthProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    // const [state, dispatch] = useReducer(reducer, initialState);
     // const dispatchSlice = useDispatch();
     // useEffect(() => {
     //     const initialize = async () => {
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
-                ...state
+                // ...state
             }}
         >
             {children}

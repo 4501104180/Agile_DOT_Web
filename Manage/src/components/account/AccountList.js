@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import MaterialTable from '@material-table/core';
-import { Stack, Box, Typography, Chip } from '@mui/material';
+import { Stack, Box, Typography } from '@mui/material';
 import { AddCircle, Edit, Delete } from '@mui/icons-material';
 
 // path
