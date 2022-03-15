@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
+const mongooseDelete = require("mongoose-delete");
 const Schema = mongoose.Schema;
 
 const Product = new Schema({
@@ -12,15 +13,11 @@ const Product = new Schema({
         slug: 'name',
         unique: true
     },
-    categoryId: {
+    categories: {
         type: Array,
         required: true
     },
     images: {
-        type: Array,
-        default: []
-    },
-    information: {
         type: Array,
         default: []
     },
@@ -55,22 +52,6 @@ const Product = new Schema({
         type: Number,
         default: 0
     },
-    rating: {
-        type: Object,
-        default: {
-            "oneStar": 0,
-            "twoStar": 0,
-            "threeStar": 0,
-            "fourStar": 0,
-            "fiveStar": 0,
-            "total": 0,
-            "average": 0
-        }
-    },
-    warranty: {
-        type: Array,
-        default: []
-    },
     tags: {
         type: Array,
         default: []
@@ -91,6 +72,11 @@ const Product = new Schema({
     timestamps: true
 });
 
+Product.plugin(mongooseDelete, {
+    deletedAt: true,
+    deletedBy: true,
+    overrideMethods: true,
+  });
 mongoose.plugin(slug);
 
 module.exports = mongoose.model('Product', Product);
