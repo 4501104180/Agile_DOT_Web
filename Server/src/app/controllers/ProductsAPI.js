@@ -1,11 +1,12 @@
-const Product = require("../models/Product");
+const Product = require('../models/Product');
 const mongoose = require("mongoose");
 
 class ProductsAPI {
     // [GET] /products/
     async findAll(req, res) {
         try {
-            const products = await Product.find({});
+            const products = await Product
+                .find({});
             res.json(products);
         } catch (error) {
             console.log(error);
@@ -13,10 +14,20 @@ class ProductsAPI {
     }
 
     // [POST] /products
-    async insertProduct(req, res) {
+    async insert(req, res) {
         try {
             const images = req.files.map((file) => file.originalname);
             const { name, ...productBody } = req.body;
+            const isDeleted = await Product
+                .findOneDeleted({ name: name });
+            if (isDeleted) {
+                res.json({
+                    statusText: 'info',
+                    message: 'This product is existed in recycle bin!',
+                    product: isDeleted
+                });
+                return;
+            }
             const product = new Product({
                 ...productBody,
                 name,
@@ -24,8 +35,8 @@ class ProductsAPI {
             });
             await product.save();
             res.json({
-                status: "success",
-                message: "Create product successfully!",
+                statusText: 'success',
+                message: 'Create product successfully!',
                 product
             });
         } catch (error) {
@@ -33,44 +44,62 @@ class ProductsAPI {
         }
     }
 
-    // [PUT] /products/:productID
-    async editProductById(req, res) {
+    // [PUT] /products/:productId
+    async edit(req, res) {
         try {
-            const { productID } = req.params;
-            const { name, images, ...newBody } = req.body;
-            const body = {
-                ...req.body,
+            const { productId } = req.params;
+            const { name, images, imagesString, ...newBody } = req.body;
+            const isDeleted = await Product
+                .findOneDeleted({ name: name });
+            if (isDeleted) {
+                res.json({
+                    statusText: 'info',
+                    message: 'This product is existed in recycle bin!',
+                    product: isDeleted
+                });
+                return;
             };
-            if (req.files) {
-                body.images = req.files.map((file) => file.originalname);
+            const body = {
+                ...newBody
+            };
+            if (req.files && req.files.length > 0) {
+                const images = req.files.map(file => file.originalname);
+                body.images = images;
+            } else {
+                body.images = imagesString ? imagesString : [];
             }
             if (name) {
-                const product = await Product.findById(productID);
+                const product = await Product
+                    .findById(productId);
                 product.name = name;
                 await product.save();
             }
-            const _product = await Product.findByIdAndUpdate(productID, body, {
-                new: true
-            });
+            const _product = await Product
+                .findByIdAndUpdate(productId, body, {
+                    new: true
+                });
             res.json({
                 product: _product,
-                status: "success",
-                message: "Edit product successfully!",
+                statusText: 'success',
+                message: 'Edit product successfully!',
             });
         } catch (error) {
             console.log(error);
         }
     }
 
-    // [DELETE] /product/:productID
-    async deleteProductById(req, res) {
+    // [DELETE] /product/:productId
+    async deleteById(req, res) {
         try {
-            const deletor = mongoose.Types.ObjectId("61af7d561ab0c6ea12eaa560");
-            const { productID } = req.params;
-            const result = await Product.delete({ _id: productID }, deletor);
+            const deletor = mongoose.Types.ObjectId('61af7d561ab0c6ea12eaa560');
+            const { productId } = req.params;
+            const result = await Product
+                .delete({ _id: productId }, deletor);
             res.json({
+                statusText: 'success',
+                message: 'Delete product successfully!',
                 ...result,
-                productID,
+                productId,
             });
         } catch (error) {
             console.log(error);
@@ -78,28 +107,34 @@ class ProductsAPI {
     }
 
     // [PATCH] /products/
-    async deleteProducts(req, res) {
+    async deleteAll(req, res) {
         try {
-            const deletor = mongoose.Types.ObjectId("61af7d561ab0c6ea12eaa560");
-            const { productIDs } = req.body;
-            const result = await Product.delete({ _id: { $in: productIDs } }, deletor);
+            const deletor = mongoose.Types.ObjectId('61af7d561ab0c6ea12eaa560');
+            const { productIds } = req.body;
+            const result = await Product
+                .delete({ _id: { $in: productIds } }, deletor);
             res.json({
+                statusText: 'success',
+                message: 'Delete selected products successfully!',
                 ...result,
-                productIDs,
+                productIds,
             });
         } catch (error) {
             console.log(error);
         }
     }
 
-    // [PATCH] /products/:productID
-    async restoreByID(req, res) {
+    // [PATCH] /products/:productId
+    async restoreById(req, res) {
         try {
-            const { productID } = req.params;
-            const result = await Product.restore({ _id: productID });
+            const { productId } = req.params;
+            const result = await Product
+                .restore({ _id: productId });
             res.json({
+                statusText: 'success',
+                message: 'Restore product successfully!',
                 ...result,
-                productID
+                productId
             });
         } catch (error) {
             console.log(error);

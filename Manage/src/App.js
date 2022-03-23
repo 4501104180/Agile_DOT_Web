@@ -1,17 +1,18 @@
 // components
-// import LoadingScreen from './components/LoadingScreen';
+import LoadingScreen from './components/LoadingScreen';
+import Snackbar from './components/Snackbar';
 // hooks
-// import useAuth from './hooks/useAuth';
+import useAuth from './hooks/useAuth';
 // 
 import Router from './routes';
 import ThemeConfig from './theme';
 
 const App = () => {
-  // const { isInitialized } = useAuth();
+  const { isInitialized } = useAuth();
   return (
     <ThemeConfig>
-      <Router />
-      {/* {isInitialized ? <Router /> : <LoadingScreen />} */}
+      <Snackbar />
+      {isInitialized ? <Router /> : <LoadingScreen />}
     </ThemeConfig>
   );
 };

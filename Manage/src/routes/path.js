@@ -22,6 +22,7 @@ export const PATH_DASHBOARD = {
     product: {
         root: ROOT_PRODUCT,
         list: path(ROOT_PRODUCT, '/list'),
+        edit: path(ROOT_PRODUCT, '/edit'),
         create: path(ROOT_PRODUCT, '/new')
     }
 };

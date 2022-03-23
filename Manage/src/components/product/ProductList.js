@@ -1,30 +1,36 @@
 import { useNavigate } from 'react-router-dom';
 import MaterialTable from '@material-table/core';
-import { Tooltip } from '@mui/material';
+import { Tooltip, Typography, Alert } from '@mui/material';
 import { AddCircle, Edit, Delete } from '@mui/icons-material';
+import { useSelector, useDispatch } from 'react-redux';
+import { useConfirm } from 'material-ui-confirm';
 
+// slices
+import { deleteProduct, deleteProducts } from '../../redux/slices/product';
 // path
 import { PATH_DASHBOARD } from '../../routes/path'
+// utils
+import { toVND } from '../../utils/formatMoney';
 
 const columns = [
     {
         field: 'name',
         title: 'Name',
-        width: '50%',
+        width: '40%'
     },
     {
         field: 'image',
         title: 'Image',
-        width: '50%',
+        width: '30%',
         render: row => (
             <Tooltip
                 disableFocusListener
                 placement='left'
-                title={<img src={row.image} alt='' />}
+                title={<img src={`${process.env.REACT_APP_IMAGE_URL}/${row.images[0]}`} alt={row.name} />}
             >
                 <img
-                    src={row.image}
-                    alt=''
+                    src={`${process.env.REACT_APP_IMAGE_URL}/${row.images[0]}`}
+                    alt={row.name}
                     style={{
                         width: '80px',
                         height: '80px'
@@ -36,117 +42,15 @@ const columns = [
     {
         field: 'price',
         title: 'Price',
-        width: '50%',
-    },
-    {
-        
-        field: 'discount',
-        title: 'Discount',
-        width: '50%',
-       
+        width: '15%',
+        render: row => (
+            <Typography variant='body2'>{toVND(row.price)}</Typography>
+        )
     },
     {
         field: 'quantity',
         title: 'Quantity',
-        width: '50%',
-    },
-    {
-        field: 'VATFee',
-        title: 'VATFee',
-        width: '50%',
-    }
-];
-
-const rows = [
-    {
-        id: '1',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '2',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '3',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '4',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '5',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '6',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '7',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '8',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '9',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
-    },
-    {
-        id: '10',
-        name:'laptop',
-        image:'https://product.hstatic.net/1000233206/product/asus-vivobook-s533eq-bn338t_cbbbdef6ef214c8599b100fd46b5e18e_master.png',
-        price:100000,
-        discount:'10%',
-        quantity:1234,
-        VATFee: '2%'
+        width: '15%'
     }
 ];
 
@@ -159,24 +63,61 @@ const options = {
 
 const ProductList = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const confirm = useConfirm();
+    const { products } = useSelector(state => state.product);
+    const handleDelete = async productId => {
+        try {
+            await confirm({
+                title: 'Are you sure you wanna remove this product?',
+                content: <Alert severity='error'>The product after deletion will be saved to the trash!</Alert>,
+                confirmationButtonProps: {
+                    color: 'error'
+                }
+            });
+            dispatch(deleteProduct(productId));
+        } catch (error) {
+
+        }
+    };
+    const handleDeleteSelected = async deleteItems => {
+        try {
+            await confirm({
+                title: 'Are you sure you wanna remove these products?',
+                content: <Alert severity='error'>The products after deletion will be saved to the trash!</Alert>,
+                confirmationButtonProps: {
+                    color: 'error'
+                }
+            });
+            const deleteIds = deleteItems.map(item => item._id);
+            dispatch(deleteProducts(deleteIds));
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <MaterialTable
-            title='Product'
+            title='Products'
             columns={columns}
-            data={rows}
+            data={products}
             options={options}
             actions={[
                 {
                     icon: () => <Edit color='warning' />,
                     tooltip: 'View and Edit',
-                    onClick: (event, row) => navigate(`/product/${row.name}`),
+                    onClick: (event, row) => navigate(`${PATH_DASHBOARD.product.edit}/${row.slug}`),
                     position: 'row'
                 },
                 {
                     icon: () => <Delete color='error' />,
                     tooltip: 'Delete',
-                    onClick: (event, rowData) => alert("You want to delete " + rowData.name),
+                    onClick: (event, row) => handleDelete(row._id),
                     position: 'row'
+                },
+                {
+                    icon: () => <Delete color='error' />,
+                    tooltip: 'Delete all selected',
+                    onClick: (evt, row) => handleDeleteSelected(row)
                 },
                 {
                     icon: () => <AddCircle color='success' />,
@@ -184,11 +125,6 @@ const ProductList = () => {
                     isFreeAction: true,
                     onClick: () => navigate(PATH_DASHBOARD.product.create)
                 },
-                {
-                    icon: () => <Delete color='error' />,
-                    tooltip: 'Delete selected',
-                    onClick: (evt, data) => alert('Are you sure delete?')
-                }
             ]}
         />
     );

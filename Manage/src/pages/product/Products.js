@@ -9,7 +9,7 @@ import { PATH_DASHBOARD } from '../../routes/path';
 
 const Products = () => {
     return (
-        <Page title='Products'>
+        <Page title='Products | D.O.T'>
             <Container sx={{ pb: 3 }}>
                 <HeaderBreadcrumbs
                     header='Products'

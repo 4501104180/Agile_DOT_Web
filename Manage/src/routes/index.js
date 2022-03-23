@@ -50,7 +50,7 @@ const Router = () => {
                         { path: '', element: <Navigate to='/product/list' replace /> },
                         { path: 'list', element: <Products /> },
                         { path: 'new', element: <ProductCreate /> },
-                        { path: ':nameProduct', element: <ProductDetail /> },
+                        { path: 'edit/:productSlug', element: <ProductCreate /> }
                     ]
                 }
             ]
@@ -76,4 +76,3 @@ const AccountDetail = Loadable(lazy(() => import('../pages/account/AccountDetail
 // Product
 const Products = Loadable(lazy(() => import('../pages/product/Products')));
 const ProductCreate = Loadable(lazy(() => import('../pages/product/ProductCreate')));
-const ProductDetail = Loadable(lazy(() => import('../pages/product/ProductDetail')));
