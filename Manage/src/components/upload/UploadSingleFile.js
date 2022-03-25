@@ -6,12 +6,13 @@ import { useDropzone } from 'react-dropzone';
 
 const propTypes = {
     file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    error: PropTypes.bool,
     caption: PropTypes.node,
     sx: PropTypes.object
 };
 
-const UploadSingleFile = ({ file, caption, sx, ...other }) => {
-    const { getRootProps, getInputProps, fileRejections } = useDropzone({
+const UploadSingleFile = ({ file, error, caption, sx, ...other }) => {
+    const { getRootProps, getInputProps, fileRejections, isDragActive, isDragReject } = useDropzone({
         multiple: false,
         ...other
     });
@@ -45,7 +46,13 @@ const UploadSingleFile = ({ file, caption, sx, ...other }) => {
     );
     return (
         <>
-            <RootStyle sx={sx}>
+            <RootStyle sx={{
+                ...(isDragActive && { opacity: 0.72 }),
+                ...((isDragReject || error) && {
+                    borderColor: 'error.main',
+                }),
+                ...sx
+            }}>
                 <DropZoneStyle
                     {...getRootProps()}
                 >
@@ -54,11 +61,11 @@ const UploadSingleFile = ({ file, caption, sx, ...other }) => {
                         <Box
                             component='img'
                             alt='Image project'
-                            src={typeof file === 'string' ? file : file.preview}
+                            src={typeof file === 'string' ? `${process.env.REACT_APP_IMAGE_URL}/${file}` : file.preview}
                             sx={{ zIndex: 8, objectFit: 'cover' }}
                         />
                     )}
-                    <PlaceholderStyle >
+                    <PlaceholderStyle>
                         <AddAPhoto />
                         <Typography variant='caption'>{file ? 'Update image' : 'Upload image'}</Typography>
                     </PlaceholderStyle>

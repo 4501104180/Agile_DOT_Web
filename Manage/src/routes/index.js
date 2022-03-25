@@ -26,14 +26,13 @@ const Router = () => {
                 { path: '', element: <Navigate to='/dashboard' replace /> },
                 { path: 'dashboard', element: <Dashboard /> },
                 {
-                    path: 'category',
+                    path: "category",
                     children: [
-                        { path: '', element: <Navigate to='/category/list' replace /> },
-                        { path: 'list', element: <Categories /> },
-                        { path: 'new', element: <CategoryCreate /> },
-                        { path: 'styles', element: <CategoryStyles /> },
-                        { path: ':slugCategory', element: <CategoryDetail /> },
-                    ]
+                      { path: "", element: <Navigate to="/category/list" replace /> },
+                      { path: "list", element: <Categories /> },
+                      { path: "new", element: <CategoryCreate /> },
+                      { path: 'edit/:slugCategory', element: <CategoryCreate /> },
+                    ],
                 },
                 {
                     path: 'account',
@@ -64,10 +63,8 @@ export default Router;
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
 
 // Category
-const Categories = Loadable(lazy(() => import('../pages/category/Categories')));
-const CategoryCreate = Loadable(lazy(() => import('../pages/category/CategoryCreate')));
-const CategoryDetail = Loadable(lazy(() => import('../pages/category/CategoryDetail')));
-const CategoryStyles = Loadable(lazy(() => import('../pages/category/CategoryStyles')));
+const Categories = Loadable(lazy(() => import("../pages/category/Categories")));
+const CategoryCreate = Loadable(lazy(() => import("../pages/category/CategoryCreate")));
 // Account
 const Accounts = Loadable(lazy(() => import('../pages/account/Accounts')));
 const AccountCreate = Loadable(lazy(() => import('../pages/account/AccountCreate')));

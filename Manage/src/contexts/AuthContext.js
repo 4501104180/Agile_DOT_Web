@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 // slices
 import { getProducts } from '../redux/slices/product';
+import { getCategories } from '../redux/slices/category';
 
 const initialState = {
     isInitialized: false
@@ -35,6 +36,7 @@ const AuthProvider = ({ children }) => {
         const initialize = async () => {
             try {
                 await dispatchSlice(getProducts());
+                await dispatchSlice(getCategories());
                 dispatch({
                     type: 'INITIALIZE'
                 });

@@ -12,7 +12,7 @@ export const PATH_DASHBOARD = {
         root: ROOT_CATEGORY,
         list: path(ROOT_CATEGORY, '/list'),
         create: path(ROOT_CATEGORY, '/new'),
-        styles: path(ROOT_CATEGORY, '/styles')
+        edit: path(ROOT_CATEGORY, '/edit')
     },
     account: {
         root: ROOT_ACCOUNT,

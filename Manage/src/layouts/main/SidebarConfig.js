@@ -33,8 +33,8 @@ const SIDEBAR_CONFIG = [
                 icon: ICONS.category,
                 children: [
                     { title: 'list', path: PATH_DASHBOARD.category.list },
-                    { title: 'create', path: PATH_DASHBOARD.category.create },
-                    { title: 'styles', path: PATH_DASHBOARD.category.styles }
+                    { title: 'create', path: PATH_DASHBOARD.category.create }
+                    // { title: 'styles', path: PATH_DASHBOARD.category.styles }
                 ]
             },
             {

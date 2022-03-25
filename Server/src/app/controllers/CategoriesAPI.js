@@ -37,7 +37,7 @@ class CategoriesAPI {
             const categoryExisted = await Category.findOne({ title: title });
             if (categoryExisted) {
                 res.json({
-                    statusText: 'error',
+                    status: 'error',
                     message: 'Category is existed'
                 });
                 console.log('error');
@@ -47,7 +47,7 @@ class CategoriesAPI {
                 .findOneDeleted({title: title});
             if(isDeleted) {
                 res.json({
-                    statusText: 'info',
+                    status: 'info',
                     message: 'Category is existed in recycle bin',
                     category: isDeleted
                 });
@@ -72,14 +72,30 @@ class CategoriesAPI {
      async editCategoryById(req, res) {
         try { 
             const { categoryID } = req.params;
-           // const banners = req.files['banners'].map( file => file.originalname );
-            const { title, image, banners, ...newBody } = req.body;
+            console.log(categoryID);
+            const { title, image, bannersString, ...newBody } = req.body;
+            const isDeleted = await Category
+                .findOneDeleted({ title: title });
+            if (isDeleted) {
+                res.json({
+                    status: 'info',
+                    message: 'Dự án tồn tại trong thùng rác!',
+                    project: isDeleted
+                });
+                return;
+            };
             const body = {
-                ...req.body,
+                ...newBody,
             };    
-            if (req.files) {
-                body.image = req.files['image'][0].originalname;
-                body.banners = req.files['banners'].map( file => file.originalname );
+            if (req.files['banners'] && (req.files['banners'].length > 0)) {
+                const banners = req.files['banners'].map(file => file.originalname);
+                body.banners = banners;
+            } else {
+                body.banners = bannersString ? bannersString : [];
+            }
+            if (req.files['image'] && (req.files['image'].length > 0)) {
+                const image = req.files['image'][0].originalname;
+                body.image = image;
             }
             if (title) {
                 const category = await Category.findById(categoryID);
@@ -87,9 +103,8 @@ class CategoriesAPI {
                 await category.save();
             }
             const _category = await Category.findByIdAndUpdate(categoryID, body, {
-                category:true,
-                
-            })
+                new: true
+            });
             res.json({
                 category: _category,
                 status: "success",
@@ -108,7 +123,9 @@ class CategoriesAPI {
             .delete({ _id: categoryID }, deletor );
                 res.json({
                     ...result,
-                    categoryID
+                    categoryID,
+                    status: 'success',
+                    message: 'aaaa'
                 });
         } catch (error) {
             console.log(error);
@@ -123,7 +140,9 @@ class CategoriesAPI {
             .delete({ _id: { $in: categoryIDs }}, deletor );
                 res.json({
                     ...result,
-                    categoryIDs
+                    categoryIDs,
+                    status: 'success',
+                    message: 'aaaa'
                 });
         } catch (error) {
             console.log(error);
@@ -133,10 +152,12 @@ class CategoriesAPI {
     async restoreByID(req, res) {
         try {
         const { categoryID } = req.params;
-        const restoredItem = await Category.restore({ _id: categoryID });
+        const result = await Category.restore({ _id: categoryID });
         res.json({
-            statusText: "success",
+            status: "success",
             message: "Restore successfully",
+            ...result,
+            category: categoryID
         });
         } catch (error) {
         console.log(error);

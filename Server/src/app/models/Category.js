@@ -25,6 +25,10 @@ const Category = new Schema({
         type: Array,
         default: []
     },
+    displayOrder: {
+        type: Number,
+        default: 1
+    }
 }, {
     _id: false,
     timestamps: true

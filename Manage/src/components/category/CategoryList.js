@@ -1,16 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import MaterialTable from '@material-table/core';
-import { Tooltip, Chip } from '@mui/material';
+import { Tooltip, Alert, Typography } from '@mui/material';
 import { AddCircle, Edit, Delete } from '@mui/icons-material';
+import { useSelector, useDispatch } from 'react-redux';
+import { useConfirm } from "material-ui-confirm";
 
 // path
 import { PATH_DASHBOARD } from '../../routes/path';
+//utils
+import { fDate } from '../../utils/formatDate';
+// slices
+import { deleteCategory, deleteCategories } from '../../redux/slices/category';
 
 const columns = [
     {
         field: 'title',
         title: 'Title',
-        width: '50%'
+        width: '40%'
     },
     {
         field: 'image',
@@ -19,10 +25,10 @@ const columns = [
             <Tooltip
                 disableFocusListener
                 placement='left'
-                title={<img src={row.image} alt='' />}
+                title={<img src={`${process.env.REACT_APP_IMAGE_URL}/${row.image}`} alt='' />}
             >
                 <img
-                    src={row.image}
+                    src={`${process.env.REACT_APP_IMAGE_URL}/${row.image}`}
                     alt=''
                     style={{
                         width: '80px',
@@ -30,7 +36,9 @@ const columns = [
                     }}
                 />
             </Tooltip>
-        )
+
+        ),
+        width: '20%'
     },
     {
         field: 'banners',
@@ -39,10 +47,10 @@ const columns = [
             <Tooltip
                 disableFocusListener
                 placement='left'
-                title={<img src={row.banners} alt='' />}
+                title={<img src={`${process.env.REACT_APP_IMAGE_URL}/${row.banners[0]}`} alt='' />}
             >
                 <img
-                    src={row.banners}
+                    src={`${process.env.REACT_APP_IMAGE_URL}/${row.banners[0]}`}
                     alt=''
                     style={{
                         width: '80px',
@@ -50,83 +58,17 @@ const columns = [
                     }}
                 />
             </Tooltip>
-        )
+        ),
+        width: '20%'
     },
     {
-        field: 'status',
-        title: 'Status',
+        field: 'createdAt',
+        title: 'Created At',
         width: '20%',
         render: row => (
-            <Chip
-                color={row.status === 'active' ? 'success' : 'error'}
-                label={row.status}
-            />
+            <Typography variant='body2'>{fDate(row.createdAt)}</Typography>
         )
     }
-];
-
-const rows = [
-    {
-        id: '1',
-        title: 'Laptop - Máy Vi Tính - Linh kiện',
-        image: 'https://salt.tikicdn.com/cache/w100/ts/product/78/83/23/7cad758fc5e8fd666e7be6f042860535.jpg.webp',
-        parentId: 'null',
-        displayOrder: '1',
-        banners: 'https://salt.tikicdn.com/cache/w1080/ts/banner/43/c9/be/c23ea0e530faf73fa58ba0f3cb042d52.jpg.webp',
-        status: 'block',
-        slug: 'laptop-may-vi-tinh-linh-kien'        
-    },
-    {
-        id: '2',
-        title: 'Điện thoại và máy tính bảng',
-        image: 'https://salt.tikicdn.com/cache/w100/ts/product/b3/95/fc/70f6724a71608f645d6435ebf5e0039b.jpg.webp',
-        parentId: 'null',
-        displayOrder: '2',
-        banners: 'https://salt.tikicdn.com/cache/w1080/ts/banner/11/79/05/aac4c754d640928b776cbf22e9dc29b5.jpg.webp',
-        status: 'active',
-        slug: 'dien-thoai-va-may-tinh-bang'        
-    },
-    {
-        id: '3',
-        title: 'Laptop',
-        image: 'https://cf.shopee.vn/file/c3f3edfaa9f6dafc4825b77d8449999d_tn',
-        parentId: '1',
-        displayOrder: '1',
-        banners: 'https://salt.tikicdn.com/cache/w1080/ts/banner/43/c9/be/c23ea0e530faf73fa58ba0f3cb042d52.jpg.webp',
-        status: 'active',
-        slug: 'laptop'        
-    },
-    {
-        id: '4',
-        title: 'Laptop gaming',
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDZkGLl_Lclvm2uEJEdNOeiv-JdZ_-zV4gPA&usqp=CAU',
-        parentId: '3',
-        displayOrder: '2',
-        banners: '',
-        status: 'active',
-        slug: 'laptop-gaming'        
-    },
-    {
-        id: '5',
-        title: 'Laptop truyền thống',
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOuI_yDVZp_dNbt3OOHV1QNs4f6mBHxKLzJQ&usqp=CAU',
-        parentId: '3',
-        displayOrder: '1',
-        banners: '',
-        status: 'active',
-        slug: 'laptop-truyen-thong'        
-    },
-    {
-        id: '6',
-        title: 'Macbook',
-        image: 'https://salt.tikicdn.com/cache/w100/ts/product/78/83/23/7cad758fc5e8fd666e7be6f042860535.jpg.webp',
-        parentId: 'null',
-        displayOrder: '1',
-        banners: 'https://salt.tikicdn.com/cache/w1080/ts/banner/43/c9/be/c23ea0e530faf73fa58ba0f3cb042d52.jpg.webp',
-        status: 'active',
-        slug: 'macbook'        
-    },
-
 ];
 
 const options = {
@@ -134,42 +76,75 @@ const options = {
     addRowPosition: 'first',
     actionsColumnIndex: -1,
     tableLayout: 'fixed'
+    
 };
 
 const CategoryList = () => {
+    const confirm = useConfirm();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { categories } = useSelector(state => state.category);
+    const handleDelete = async _categoryID => {
+        try {
+            await confirm({
+                title: "Are you sure to Delete this Category?",
+                content: <Alert severity="error">This Category will move to recycle bin</Alert>,
+                confirmationButtonProps: {
+                    color: "error",
+                },
+            });
+            dispatch(deleteCategory(_categoryID));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleDeleteSelected = async deleteItems => {
+        try {
+            await confirm({
+                title: 'Are you sure to Delete selected Category?',
+                content: <Alert severity='error'>Selected Category will move to recycle bin</Alert>,
+                confirmationButtonProps: {
+                    color: 'error'
+                }
+            });
+            const deleteIds = deleteItems.map(item => item._id);
+            dispatch(deleteCategories(deleteIds));
+        } catch (error) {
+
+        }
+    }
     return (
         <MaterialTable
-            title='Categories'
-            columns={columns}
-            data={rows}
-            options={options}
-            actions={[
-                {
-                    icon: () => <Edit color='warning' />,
-                    tooltip: 'View and Edit',
-                    onClick: (event, row) => navigate(`/category/${row.slug}`),
-                    position: 'row'
-                },
-                {
-                    icon: () => <Delete color='error' />,
-                    tooltip: 'Delete',
-                    onClick: (event, rowData) => alert("You want to delete " + rowData.name),
-                    position: 'row'
-                },
-                {
-                    icon: () => <AddCircle color='success' />,
-                    tooltip: 'Add',
-                    isFreeAction: true,
-                    onClick: () => navigate(PATH_DASHBOARD.category.create)
-                },
-                {
-                    icon: () => <Delete color='error' />,
-                    tooltip: 'Delete selected',
-                    onClick: (evt, data) => alert('Are you sure delete ?')
-                }
-            ]}
-        />
+                    title='Categories'
+                    columns={columns}
+                    data={categories}
+                    options={options}
+                    actions={[
+                        {
+                            icon: () => <Edit color='warning' />,
+                            tooltip: 'View and Edit',
+                            onClick: (event, row) => navigate(`${PATH_DASHBOARD.category.edit}/${row.slug}`),
+                            position: 'row'
+                        },
+                        {
+                            icon: () => <Delete color='error' />,
+                            tooltip: 'Delete',
+                            onClick: (event, row) => handleDelete(row._id),
+                            position: 'row'
+                        },
+                        {
+                            icon: () => <AddCircle color='success' />,
+                            tooltip: 'Add',
+                            isFreeAction: true,
+                            onClick: () => navigate(PATH_DASHBOARD.category.create)
+                        },
+                        {
+                            icon: () => <Delete color='error' />,
+                            tooltip: 'Delete all selected',
+                            onClick: (evt, row) => handleDeleteSelected(row),
+                        }
+                    ]}
+                />
     );
 };
 

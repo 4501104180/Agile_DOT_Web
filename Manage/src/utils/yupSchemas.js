@@ -1,16 +1,19 @@
 import * as yup from 'yup';
 
 export const createCategorySchema = yup.object().shape({
-    name: yup
+    title: yup
         .string()
-        .required('Không được bỏ trống!'),
-    subtitle: yup
+        .required('This field is required!'),
+    displayOrder: yup
         .string()
-        .required('Không được bỏ trống!')
-        .max(100, 'Tối đa 100 ký tự'),
+        .required('This field is required!')
+        .max(100, 'Up to 100 characters'),
     image: yup
         .mixed()
-        .required('Không được bỏ trống!'),
+        .required('This field is required!'),
+    banners: yup
+        .array()
+        .min(1, 'This field is required!'),
 });
 
 export const createProductSchema = yup.object().shape({
