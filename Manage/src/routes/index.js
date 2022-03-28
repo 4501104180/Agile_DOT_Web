@@ -35,14 +35,14 @@ const Router = () => {
                     ],
                 },
                 {
-                    path: 'account',
+                    path: "account",
                     children: [
-                        { path: '', element: <Navigate to='/account/list' replace /> },
-                        { path: 'list', element: <Accounts /> },
-                        { path: 'new', element: <AccountCreate /> },
-                        { path: ':emailAccount', element: <AccountDetail /> },
-                    ]
-                },
+                      { path: "", element: <Navigate to="/account/list" replace /> },
+                      { path: "list", element: <Accounts /> },
+                      { path: "new", element: <AccountCreate /> },
+                      { path: "edit/:accountId", element: <AccountCreate /> },
+                    ],
+                  },
                 {
                     path: 'product',
                     children: [
@@ -66,9 +66,10 @@ const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
 const Categories = Loadable(lazy(() => import("../pages/category/Categories")));
 const CategoryCreate = Loadable(lazy(() => import("../pages/category/CategoryCreate")));
 // Account
-const Accounts = Loadable(lazy(() => import('../pages/account/Accounts')));
-const AccountCreate = Loadable(lazy(() => import('../pages/account/AccountCreate')));
-const AccountDetail = Loadable(lazy(() => import('../pages/account/AccountDetail')));
+const Accounts = Loadable(lazy(() => import("../pages/account/Accounts")));
+const AccountCreate = Loadable(
+  lazy(() => import("../pages/account/AccountCreate"))
+);
 
 // Product
 const Products = Loadable(lazy(() => import('../pages/product/Products')));

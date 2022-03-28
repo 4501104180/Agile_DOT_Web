@@ -39,3 +39,20 @@ export const createProductSchema = yup.object().shape({
         .number()
         .min(0, 'Minimum is 0!')
 });
+export const createAccountSchema = yup.object().shape({
+    email: yup
+        .string()
+        .required('Not be empty!'),
+    password: yup
+        .string()
+        .required('Not be empty!'),
+    image: yup
+        .mixed()
+        .required('Not be empty!'),
+    phone: yup
+        .string()
+        .max(10, 'Max is 10 numbers'),
+    role: yup
+        .string()
+        .required('Not be empty!'),
+});
