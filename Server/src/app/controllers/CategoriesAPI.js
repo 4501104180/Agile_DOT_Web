@@ -38,7 +38,7 @@ class CategoriesAPI {
             if (categoryExisted) {
                 res.json({
                     status: 'error',
-                    message: 'Category is existed'
+                    message: 'Category is existed',
                 });
                 console.log('error');
                 return;
@@ -62,7 +62,8 @@ class CategoriesAPI {
             await category.save();
             res.json({
                 status: 'success',
-                message: 'Create category successfully!'
+                message: 'Create category successfully!',
+                category
             });
         } catch (error) {
             console.log(error);
@@ -79,7 +80,7 @@ class CategoriesAPI {
             if (isDeleted) {
                 res.json({
                     status: 'info',
-                    message: 'Dự án tồn tại trong thùng rác!',
+                    message: 'This product is existed in recycle bin!',
                     project: isDeleted
                 });
                 return;
@@ -125,7 +126,7 @@ class CategoriesAPI {
                     ...result,
                     categoryID,
                     status: 'success',
-                    message: 'aaaa'
+                    message: 'Delete product successfully!'
                 });
         } catch (error) {
             console.log(error);
@@ -142,7 +143,7 @@ class CategoriesAPI {
                     ...result,
                     categoryIDs,
                     status: 'success',
-                    message: 'aaaa'
+                    message: 'Delete product successfully!'
                 });
         } catch (error) {
             console.log(error);

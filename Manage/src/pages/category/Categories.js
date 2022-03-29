@@ -9,7 +9,7 @@ import { PATH_DASHBOARD } from '../../routes/path';
 
 const Categories = () => {
     return (
-        <Page title='Categories'>
+        <Page title='Categories | DOT'>
             <Container sx={{ pb: 3 }}>
                 <HeaderBreadcrumbs
                     header='Categories'
