@@ -80,7 +80,7 @@ class CategoriesAPI {
             if (isDeleted) {
                 res.json({
                     status: 'info',
-                    message: 'This product is existed in recycle bin!',
+                    message: 'This category is existed in recycle bin!',
                     project: isDeleted
                 });
                 return;
@@ -126,7 +126,7 @@ class CategoriesAPI {
                     ...result,
                     categoryID,
                     status: 'success',
-                    message: 'Delete product successfully!'
+                    message: 'Delete category successfully!'
                 });
         } catch (error) {
             console.log(error);
@@ -143,7 +143,7 @@ class CategoriesAPI {
                     ...result,
                     categoryIDs,
                     status: 'success',
-                    message: 'Delete product successfully!'
+                    message: 'Delete category successfully!'
                 });
         } catch (error) {
             console.log(error);

@@ -1,10 +1,7 @@
-import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Skeleton } from '@mui/material';
+import { Stack, Typography, Skeleton } from '@mui/material';
 
 import Title from './Title';
-import Slick from './slick/Slick';
-import { settingProductSection } from './slick/SlickSettings';
 import ProductCard from './ProductCard';
 
 const products = [
@@ -13,7 +10,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -28,7 +25,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -43,7 +40,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -58,7 +55,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -73,7 +70,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -88,7 +85,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -103,7 +100,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -118,7 +115,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -126,14 +123,14 @@ const products = [
         amount: 10,
         viewed: 325,
         searched: 225,
-        sold: 451
+        sold: 451,
     },
     {
         _id: '9',
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -148,7 +145,7 @@ const products = [
         images: [
             'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
         ],
-        name: 'Section_Latop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
+        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
         slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
         price: 100000,
         discount: 0,
@@ -161,7 +158,7 @@ const products = [
     
 ];
 
-const SkeletonLoad = [...Array(5)].map((_, index) => (
+const SkeletonLoad = [...Array(10)].map((_, index) => (
     <Stack key={index} sx={{ p: 2 }} >
         <Skeleton variant='rectangular' width={180} height={180} />
         <Skeleton variant='text' height={45} />
@@ -170,28 +167,67 @@ const SkeletonLoad = [...Array(5)].map((_, index) => (
     </Stack>
 ));
 
-const ProductSection = ({ id, _id, type, title, sx }) => {
-
+const ProductList = ({ id }) => {
     return (
-        <RootStyle id={id} sx={{ ...sx }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Title>{title}</Title>
-                <Link to='/auth' underline="hover">
-                    <Title sx={{ color: '#f53d2d' }}>View more</Title>
-                </Link>
-            </Box>
-            <Slick settings={settingProductSection}>
-                {products && products.map(product => (
-                    <ProductCard key={product._id} product={product} />
-                ))}
-                {!products && SkeletonLoad}
-            </Slick>
-        </RootStyle >
+        <Stack id={id}>
+            <Title>Suggestions for you</Title>
+            <Wrapper>
+                {products.length !== 0 && (
+                    <>
+                        {products.map(product => (
+                            <ProductCard key={product._id} product={product} />
+                        ))}
+
+                        <LoadMore>
+                            <LoadButton>
+                                <Typography variant="subtitle2">
+                                    Load more
+                                </Typography>
+                            </LoadButton>
+                        </LoadMore>
+                    </>
+                )}
+                {products.length === 0 && SkeletonLoad}
+            </Wrapper>
+        </Stack>
     );
 };
 
-const RootStyle = styled('div')({
-    margin: '30px 0'
+const Wrapper = styled('div')({
+    position: 'relative',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginBottom: '50px'
 });
 
-export default ProductSection;
+const LoadMore = styled('div')({
+    position: 'absolute',
+    bottom: '-70px',
+    left: '30%',
+    width: '40%',
+    height: '50px',
+    margin: '10px 0',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+});
+
+const LoadButton = styled('div')(({ theme }) => ({
+    width: '100%',
+    padding: '15px',
+    borderRadius: '15px',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: '5px 3px 7px rgb(145 158 171 / 24%)',
+    transition: '0.5s',
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '&:hover': {
+        color: '#fff',
+        backgroundColor: '#f76254'
+    }
+}));
+
+export default ProductList;

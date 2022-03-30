@@ -10,6 +10,7 @@ const Router = () => (
             <Route>
                 <MainLayout>
                     <Switch>
+                        <Route path='/' exact component={Home} />
                         <Route path='/cart' exact component={Cart} />
                         <Route path='*' component={NotFound} />
                     </Switch>
@@ -22,5 +23,6 @@ const Router = () => (
 export default Router;
 
 // Main
+const Home = lazy(() => import('../pages/Home'));
 const Cart = lazy(() => import('../pages/Cart'));
 const NotFound = lazy(() => import('../pages/NotFound'));
