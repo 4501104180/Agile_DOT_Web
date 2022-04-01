@@ -2,7 +2,15 @@ import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Link, Stack } from '@mui/material';
 
+// contexts
+import useAuth from '../../hooks/useAuth';
+// path
+import { PATH_AUTH } from '../../routes/path';
+// 
+import AccountPopover from './AccountPopover';
+
 const HeaderTop = () => {
+    const { isAuthenticated, logout } = useAuth();
     return (
         <>
             <Stack
@@ -26,19 +34,25 @@ const HeaderTop = () => {
                     <Linking component={RouterLink} to={{ pathname: 'https://www.facebook.com/exe.shiro' }} target='_blank'>
                         <i className="bi bi-question-circle"></i> Support
                     </Linking>
-                    <Linking
-                        component={RouterLink}
-                        to='https://www.facebook.com/exe.shiro'
-                        sx={{ ml: '20px', borderRight: '1px solid #ccc' }}
-                    >
-                        Sign in
-                    </Linking>
-                    <Linking
-                        component={RouterLink}
-                        to='https://www.facebook.com/exe.shiro'
-                    >
-                        Sign up
-                    </Linking>
+                    {isAuthenticated
+                        ? <AccountPopover logout={logout} />
+                        : (
+                            <>
+                                <Linking
+                                    component={RouterLink}
+                                    to={PATH_AUTH.login}
+                                    sx={{ ml: '20px', borderRight: '1px solid #ccc' }}
+                                >
+                                    Sign in
+                                </Linking>
+                                <Linking
+                                    component={RouterLink}
+                                    to='/path-to-register'
+                                >
+                                    Sign up
+                                </Linking>
+                            </>
+                        )}
                 </Stack>
             </Stack >
             <Label

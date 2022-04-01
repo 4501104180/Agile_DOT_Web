@@ -6,7 +6,7 @@ import { CartList, TotalPrice } from '../components/cart';
 
 const Cart = () => {
     return (
-        <Page title='Cart | CV Shop'>
+        <Page title='Cart | DOT Shop'>
             <Container className="wide-container">
                 <Breadcrumbs separator='›' sx={{ pb: '5px' }}>
                     <Link to='/' style={{ fontSize: '15px' }}>

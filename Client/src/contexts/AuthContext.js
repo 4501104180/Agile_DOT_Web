@@ -1,14 +1,35 @@
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer } from 'react';
 
+// apis
+import accountApi from '../apis/accountApi';
+// utils
+import { getToken, setToken, isValidToken } from '../utils/jwt';
+
 const initialState = {
-    isInitialized: false
+    isInitialized: false,
+    isAuthenticated: false
 };
 
 const handlers = {
     INITIALIZE: (state, action) => {
+        const isAuthenticated = action.payload;
         return {
-            isInitialized: true
+            ...state,
+            isInitialized: true,
+            isAuthenticated
+        }
+    },
+    LOGIN: (state) => {
+        return {
+            ...state,
+            isAuthenticated: true
+        }
+    },
+    LOGOUT: (state) => {
+        return {
+            ...state,
+            isAuthenticated: false
         }
     }
 };
@@ -20,7 +41,9 @@ const propTypes = {
 };
 
 const AuthContext = createContext({
-    ...initialState
+    ...initialState,
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve()
 });
 
 const AuthProvider = ({ children }) => {
@@ -28,8 +51,15 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const initialize = async () => {
             try {
+                const tokens = getToken();
+                setToken(tokens);
+                const isAuthenticated = await isValidToken(tokens);
+                if (isAuthenticated) {
+                    // 
+                }
                 dispatch({
-                    type: 'INITIALIZE'
+                    type: 'INITIALIZE',
+                    payload: isAuthenticated
                 });
             } catch (error) {
                 console.log(error);
@@ -37,10 +67,26 @@ const AuthProvider = ({ children }) => {
         };
         initialize();
     }, []);
+    const login = async (email, password) => {
+        const tokens = await accountApi.login(email, password);
+        setToken(tokens);
+        // 
+        dispatch({
+            type: 'LOGIN'
+        });
+    };
+    const logout = async () => {
+        setToken(null);
+        dispatch({
+            type: 'LOGOUT'
+        });
+    };
     return (
         <AuthContext.Provider
             value={{
-                ...state
+                ...state,
+                login,
+                logout
             }}
         >
             {children}
