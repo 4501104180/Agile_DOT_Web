@@ -1,147 +1,35 @@
+import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Skeleton } from '@mui/material';
 
 import Title from '../Title';
+import ToggleShowAll from '../ToggleShowAll';
+import categoryApi from '../../apis/categoryApi';
+import { ROOT_EXTERNAL } from '../../routes/path';
 
-const categories = [
-    {
-        _id: '1',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '2',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '3',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '4',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '5',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '6',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '7',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '8',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '9',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    },
-    {
-        _id: '10',
-        title: 'Balo',
-        image: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        banners: [
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973',
-            'http://bizweb.dktcdn.net/thumb/grande/100/168/179/products/8704987.png?v=1633320475973'
-        ],
-        slug: 'balo',
-    }
-];
+const propTypes = {
+    id: PropTypes.string
+};
 
 const Categories = ({ id }) => {
-    
+    const [categories, setCategories] = useState(null);
+    useEffect(() => {
+        const getListCategory = async () => {
+            try {
+                const listCategory = await categoryApi.listCategory();
+                setCategories(listCategory);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getListCategory();
+    }, [])
     return (
         <Box id={id}>
             <Title>Categories</Title>
+            <ToggleShowAll>
                 <RootStyle
                     container
                     justifyContent="center"
@@ -150,13 +38,22 @@ const Categories = ({ id }) => {
                         <Grid item lg={2} sm={3} xs={6} key={category._id}>
                             <Link to={`/${category.slug}/cid${category._id}`}>
                                 <Category>
-                                <Image src={category.image} data-src={category.image} alt={category.title} key={category._id} className='lazyload' />
+                                    <Image src={"http://localhost:5000/images/" + category.image} alt={category.title} key={category._id} className='lazyload' />
                                     <Name title={category.title}>{category.title}</Name>
                                 </Category>
                             </Link>
                         </Grid>
                     ))}
+                    {!categories && [...Array(12)].map((_, index) => (
+                        <Grid item lg={2} sm={3} xs={6} key={index}>
+                            <Category>
+                                <Skeleton variant="circular" width={49} height={49} />
+                                <Skeleton variant="rectangular" width={80} height={45} />
+                            </Category>
+                        </Grid>
+                    ))}
                 </RootStyle>
+            </ToggleShowAll>
         </Box>
     );
 }
@@ -207,5 +104,7 @@ const Name = styled('span')({
         color: '#f53d2d'
     }
 });
+
+Categories.propTypes = propTypes;
 
 export default Categories;

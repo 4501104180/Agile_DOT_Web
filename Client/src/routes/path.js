@@ -1,6 +1,7 @@
 const path = (root, sublink) => {
     return `${root}${sublink}`;
 };
+export const ROOT_EXTERNAL = process.env.REACT_APP_MANAGE_URL;
 
 const ROOT_AUTH = '/auth';
 
