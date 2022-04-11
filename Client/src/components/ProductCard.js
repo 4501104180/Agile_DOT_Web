@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import {
@@ -18,19 +19,20 @@ const CARD = {
     HEIGHT: 'auto'
 };
 
+const propTypes = {
+    product: PropTypes.object
+};
 
 const ProductCard = ({ product }) => {
-
     const { _id, images, name, slug, sold, price, discount } = product;
-    
     return (
         <RootStyle>
-            <Link >
+            <Link to={`/${slug}/pid=${_id}`}>
                 <ImageWrapper>
                     <Image
                         component="img"
                         height="200"
-                        src={images[0]}
+                        src={"http://localhost:5000/images/" + images[0]}
                         alt='Image...'
                         className='lazyload'
                     />
@@ -144,5 +146,7 @@ const Price = styled(Typography)(({ tag, theme }) => ({
     fontSize: '16px',
     color: tag === 'sale' ? 'red' : theme.palette.text.primary
 }));
+
+ProductCard.propTypes = propTypes;
 
 export default ProductCard;

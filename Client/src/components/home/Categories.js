@@ -7,7 +7,6 @@ import { Box, Grid, Skeleton } from '@mui/material';
 import Title from '../Title';
 import ToggleShowAll from '../ToggleShowAll';
 import categoryApi from '../../apis/categoryApi';
-import { ROOT_EXTERNAL } from '../../routes/path';
 
 const propTypes = {
     id: PropTypes.string

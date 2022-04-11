@@ -13,4 +13,10 @@ router.put('/:productId', upload.array('images', 10), productsAPI.edit);
 router.post('/', upload.array('images', 10), productsAPI.insert);
 router.get('/', productsAPI.findAll);
 
+router.get("/top/:type/:number", productsAPI.topProducts);
+router.get("/similar/:productId/:number", productsAPI.similarProducts);
+router.get("/:page/:number", productsAPI.findAllWithPagination);
+router.get("/:slugProduct", productsAPI.findBySlug);
+router.post("/c", productsAPI.findByCategory);
+
 module.exports = router;

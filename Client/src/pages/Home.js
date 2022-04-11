@@ -3,7 +3,7 @@ import { Container } from '@mui/material';
 import Page from '../components/Page';
 import Teleport from '../components/Teleport';
 import { combineLink } from '../components/ScrollToTop';
-import { Banners, Categories } from '../components/home';
+import { Banners, Categories } from '../components/home'; 
 import { ViewCarousel, LocalFireDepartment, Category, ScreenSearchDesktop, Preview, Ballot } from '@mui/icons-material';
 import ProductSection from '../components/ProductSection';
 import ProductList from '../components/ProductList';
@@ -18,7 +18,7 @@ const actions = [
 ];
 
 const Home = () => (
-    <Page title='DOT Shop - Buy online, good price, good quality, fast shipping'>
+    <Page title='CV Shop - Buy online, good price, good quality, fast shipping'>
         <Container>
             <Teleport actions={actions} />
             <Banners id='banners' />

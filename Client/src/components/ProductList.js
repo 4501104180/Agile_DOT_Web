@@ -1,162 +1,15 @@
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Stack, Typography, Skeleton } from '@mui/material';
+import { Stack, Typography, Skeleton, CircularProgress } from '@mui/material';
 
 import Title from './Title';
 import ProductCard from './ProductCard';
+import useInfiniteProduct from '../hooks/useInfiniteProduct';
 
-const products = [
-    {
-        _id: '1',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '2',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '3',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '4',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '5',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '6',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '7',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '8',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451,
-    },
-    {
-        _id: '9',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    {
-        _id: '10',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'List_Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451
-    },
-    
-];
+const propTypes = {
+    id: PropTypes.string
+};
 
 const SkeletonLoad = [...Array(10)].map((_, index) => (
     <Stack key={index} sx={{ p: 2 }} >
@@ -168,6 +21,11 @@ const SkeletonLoad = [...Array(10)].map((_, index) => (
 ));
 
 const ProductList = ({ id }) => {
+    const [page, setPage] = useState(1);
+    const { isLoading, error, hasMore, products } = useInfiniteProduct(page, 10);
+    const handleLoadMore = () => {
+        setPage(prevPage => prevPage + 1);
+    };
     return (
         <Stack id={id}>
             <Title>Suggestions for you</Title>
@@ -179,14 +37,20 @@ const ProductList = ({ id }) => {
                         ))}
 
                         <LoadMore>
-                            <LoadButton>
-                                <Typography variant="subtitle2">
-                                    Load more
-                                </Typography>
-                            </LoadButton>
+                            {!isLoading && hasMore && (
+                                <LoadButton onClick={handleLoadMore}>
+                                    <Typography variant="subtitle2">
+                                        Load more
+                                    </Typography>
+                                </LoadButton>
+                            )}
+                            {isLoading && <CircularProgress size={25} color='error' />}
                         </LoadMore>
+
+                        {error && <Typography color='error' variant='subtitle2'>Could't load the products</Typography>}
                     </>
                 )}
+
                 {products.length === 0 && SkeletonLoad}
             </Wrapper>
         </Stack>
@@ -229,5 +93,7 @@ const LoadButton = styled('div')(({ theme }) => ({
         backgroundColor: '#f76254'
     }
 }));
+
+ProductList.propTypes = propTypes;
 
 export default ProductList;
