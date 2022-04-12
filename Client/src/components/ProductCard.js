@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import {
     Stack,
@@ -11,6 +11,11 @@ import {
     IconButton
 } from '@mui/material';
 import { Favorite, AddShoppingCart, FindInPage } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+
+import { PATH_AUTH } from '../routes/path';
+import { getToken } from '../utils/jwt';
+import { addCart } from '../redux/slices/cart';
 import { CARD_WIDTH } from '../constant';
 import { toVND } from '../utils/formatMoney';
 
@@ -24,7 +29,21 @@ const propTypes = {
 };
 
 const ProductCard = ({ product }) => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const tokens = getToken();
     const { _id, images, name, slug, sold, price, discount } = product;
+    const handleAddCart = () => {
+        if (tokens) {
+            dispatch(addCart({
+                productId: _id,
+                quantity: 1
+            }));
+        } else {
+            const { pathname } = history.location;
+            history.push(PATH_AUTH.login, { from: pathname });
+        }
+    };
     return (
         <RootStyle>
             <Link to={`/${slug}/pid=${_id}`}>
@@ -63,7 +82,7 @@ const ProductCard = ({ product }) => {
                 </CardContent>
             </Link>
             <CardActions>
-                <IconButton aria-label="add to carts" >
+                <IconButton aria-label="add to carts" onClick={handleAddCart}>
                     <AddShoppingCart />
                 </IconButton>
                 <IconButton aria-label="add to favorites">

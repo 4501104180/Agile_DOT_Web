@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider as ReduxProvider } from 'react-redux';
 
+import { store } from './redux/store';
 import { AuthProvider } from './contexts/AuthContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 
@@ -12,13 +14,15 @@ import App from './App';
 ReactDOM.render(
   <React.StrictMode>
     <HelmetProvider>
-      <AuthProvider>
-        <SettingsProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </SettingsProvider>
-      </AuthProvider>
+      <ReduxProvider store={store}>
+        <AuthProvider>
+          <SettingsProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </SettingsProvider>
+        </AuthProvider>
+      </ReduxProvider>
     </HelmetProvider>
   </React.StrictMode>,
   document.getElementById('root')

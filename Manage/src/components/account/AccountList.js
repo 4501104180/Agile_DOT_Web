@@ -103,7 +103,7 @@ const AccountList = () => {
                 }
             });
             const res = await accountApi.deletebyID(_accountID);
-            const { statusText, message, accountID } = res;
+            const { accountID } = res;
             const newAccount = accounts.filter(_account => _account._id !== accountID);
             setAccounts(newAccount);
         } catch (error) {
@@ -121,7 +121,7 @@ const AccountList = () => {
             });
             const deleteIds = _data.map(item => item._id);
             const res = await accountApi.deletedAll(deleteIds);
-            const { statusText, message, accountIDs } = res;
+            const { accountIDs } = res;
             const newAccount = accounts.filter(_account => !accountIDs.includes(_account._id));
             setAccounts(newAccount);
         } catch (error) {

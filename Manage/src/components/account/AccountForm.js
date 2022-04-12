@@ -208,4 +208,6 @@ const AccountForm = ({isEdit, account}) => {
     );
 };
 
+AccountForm.propTypes = propTypes;
+
 export default AccountForm;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Stack, Typography, Link } from '@mui/material';
@@ -6,7 +7,28 @@ import { CART_WIDTH } from '../../constant';
 import { HEADER_HEIGHT } from '../../constant';
 import { toVND } from '../../utils/formatMoney';
 
-const TotalPrice = () => {
+const propTypes = {
+    user: PropTypes.object,
+    cart: PropTypes.array
+};
+
+const TotalPrice = ({ cart }) => {
+    const isChecked = cart.filter(item => item.checked).length !== 0;
+    const totalPrice = cart.reduce((sum, item) => {
+        if (item.checked) {
+            return sum + (item.amount * (item.price - (item.price * item.discount / 100)));
+        }
+        return sum;
+    }, 0);
+    const totalCoupon = 0;
+    const totalVAT = cart.reduce((sum, item) => {
+        if (item.checked) {
+            return sum + item.VATFee;
+        }
+        return sum;
+    }, 0);
+    const freeShip = totalPrice >= 100000000 ? 50000 : totalPrice >= 50000000 ? 30000 : 0;
+    const totalFreeShip = totalVAT - freeShip > 0 ? totalVAT - freeShip : 0;
     return (
         <RootStyle>
             <ContentInner>
@@ -31,25 +53,26 @@ const TotalPrice = () => {
                 <Wrapper>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <Typography variant='subtitle2'>Guess</Typography>
-                        <Typography variant='subtitle1'>{toVND(100000)}</Typography>
+                        <Typography variant='subtitle1'>{toVND(totalPrice)}</Typography>
                     </Stack>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <Typography variant='subtitle2'>Coupon</Typography>
-                        <Typography variant='subtitle1'>- {toVND(100000)}</Typography>
+                        <Typography variant='subtitle1'>- {totalCoupon}</Typography>
                     </Stack>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <Typography variant='subtitle2'>Ship Fee</Typography>
-                        <Typography variant='subtitle1'>+ {toVND(100000)}</Typography>
+                        <Typography variant='subtitle1'>+ {toVND(totalVAT)}</Typography>
                     </Stack>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <Typography variant='subtitle2'>Freeship</Typography>
-                        <Typography variant='subtitle1'>- {toVND(100000)}</Typography>
+                        <Typography variant='subtitle1'>- {toVND(freeShip)}</Typography>
                     </Stack>
                     <Stack direction='row' justifyContent='space-between' alignItems='center'>
                         <Typography variant='subtitle2'>Total</Typography>
                         <Stack alignItems='end'>
                             <Typography variant='subtitle1' sx={{ fontWeight: 'bold', color: 'error.main' }}>
-                                {toVND(100000)}
+                                {!isChecked && 'Choose a product, please!'}
+                                {isChecked && toVND(totalPrice - totalCoupon + totalFreeShip)}
                             </Typography>
                             <Typography variant='caption'>
                                 (VAT includes)
@@ -58,7 +81,7 @@ const TotalPrice = () => {
                     </Stack>
                 </Wrapper>
                 <OrderButton>
-                    Check out (10)
+                    Check out ({cart.filter(item => item.checked).length})
                 </OrderButton>
             </ContentInner>
         </RootStyle>
@@ -105,5 +128,7 @@ const OrderButton = styled('button')({
         backgroundColor: '#f53d2d'
     }
 });
+
+TotalPrice.propTypes = propTypes;
 
 export default TotalPrice;

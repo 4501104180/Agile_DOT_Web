@@ -9,10 +9,10 @@ const upload = require('../app/middlewares/upload');
 
 
 router.get('/verify', verifyToken, (req, res) => {
-    res.json(!!req.user._id);
+    res.json(!!req.account._id);
 });
 router.get('/role-guard', verifyToken, (req, res) => {
-    res.json(req.user.role);
+    res.json(req.account.role);
 });
 router.delete('/:accountID', accountsAPI.deletebyID);
 router.put('/:accountID', upload.single('image'), accountsAPI.edit);

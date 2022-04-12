@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer } from 'react';
+import { useDispatch } from 'react-redux';
 
 // apis
 import accountApi from '../apis/accountApi';
+// slices
+import { getCart, deleteCart } from '../redux/slices/cart';
 // utils
 import { getToken, setToken, isValidToken } from '../utils/jwt';
 
@@ -48,6 +51,7 @@ const AuthContext = createContext({
 
 const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const dispatchSlice = useDispatch();
     useEffect(() => {
         const initialize = async () => {
             try {
@@ -55,7 +59,7 @@ const AuthProvider = ({ children }) => {
                 setToken(tokens);
                 const isAuthenticated = await isValidToken(tokens);
                 if (isAuthenticated) {
-                    // 
+                    await dispatchSlice(getCart());
                 }
                 dispatch({
                     type: 'INITIALIZE',
@@ -66,11 +70,12 @@ const AuthProvider = ({ children }) => {
             }
         };
         initialize();
-    }, []);
+    }, [dispatchSlice]);
     const login = async (email, password) => {
-        const tokens = await accountApi.login(email, password);
+        const res = await accountApi.login(email, password);
+        const { tokens } = res;
         setToken(tokens);
-        // 
+        await dispatchSlice(getCart());
         dispatch({
             type: 'LOGIN'
         });
@@ -80,6 +85,7 @@ const AuthProvider = ({ children }) => {
         dispatch({
             type: 'LOGOUT'
         });
+        dispatchSlice(deleteCart());
     };
     return (
         <AuthContext.Provider

@@ -1,30 +1,59 @@
+import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Stack, Checkbox, Typography, IconButton } from '@mui/material';
 import { DeleteForeverOutlined, Favorite, Check } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
 
 import { CART_WIDTH } from '../../constant';
 import { HEADER_HEIGHT } from '../../constant';
+import { toggleCheck } from '../../redux/slices/cart';
+import useSnackbar from '../../hooks/useSnackbar';
+import useModal from '../../hooks/useModal';
 import CartItem from './CartItem';
 import Image from '../Image';
 
-const cart = [
-    {
-        _id: '001',
-        images: [
-            'https://salt.tikicdn.com/cache/200x200/ts/product/ab/92/c0/59a0fbd34daaf381a184e3173234e726.jpg.webp'
-        ],
-        name: 'Laptop HP Probook 450 G8 i3 1115G4/4GB/256GB/15.6/Win10/(2H0U4PA)/Bạc - Hàng chính hãng',
-        slug: 'laptop-hp-probook-450-g8-i3-1115g4-4gb-256gb-15-6-win10-2h0u4pa-bac-hang-chinh-hang',
-        price: 100000,
-        discount: 0,
-        quantity: 100,
-        amount: 10,
-        checked: false,
-        limit: 0
-    }
-];
+const propTypes = {
+    totalItem: PropTypes.number,
+    cart: PropTypes.array
+};
 
-const CartList = () => {
+const CartList = ({ totalItem, cart }) => {
+    const { setSnackbar } = useSnackbar();
+    const { setModal } = useModal();
+    const dispatch = useDispatch();
+    const isCheckedAll = cart.filter(item => !item.checked).length === 0;
+    const totalPrice = cart.reduce((sum, item) => {
+        if (item.checked) {
+            return sum + (item.amount * (item.price - (item.price * item.discount / 100)));
+        }
+        return sum;
+    }, 0);
+    const handleChange = (_id, e) => {
+        dispatch(toggleCheck({
+            cartId: _id,
+            isCheckedAll: e.target.checked
+        }));
+    };
+    const handleRemove = _id => {
+        // Prevent remove all if many boxes were't checked
+        const isCheckedMany = cart.filter(item => item.checked).length > 0;
+        if (!_id && !isCheckedMany) {
+            setSnackbar({
+                isOpen: true,
+                type: null,
+                message: 'Please select the product to delete'
+            });
+            return;
+        }
+        setModal({
+            isOpen: true,
+            _id,
+            title: 'Are you sure you wanna remove these products?',
+            content: 'The products will be permanently removed from the cart!',
+            type: 'error',
+            caseSubmit: 'remove/cart'
+        });
+    };
     return (
         <RootStyle>
             <Heading>
@@ -33,32 +62,32 @@ const CartList = () => {
                         <Stack className="cart-col-1" direction='row' alignItems='center'>
                             <Checkbox
                                 size='small'
-                                checked={false}
+                                checked={isCheckedAll}
                                 checkedIcon={<Favorite />}
-                                onChange={() => { }}
+                                onChange={e => handleChange(null, e)}
                                 sx={{ '& .MuiSvgIcon-root': { fontSize: 24 } }}
                             />
-                            <Typography variant='subtitle2'>All (10 products)</Typography>
+                            <Typography variant='subtitle2'>All ({totalItem} products)</Typography>
                         </Stack>
                         <Typography className='cart-col-2' variant='subtitle2'>Single</Typography>
                         <Typography className='cart-col-3' variant='subtitle2'>Quantity</Typography>
                         <Typography className='cart-col-4' variant='subtitle2'>Price</Typography>
-                        <IconButton className='cart-col-5' color='error' onClick={() => { }}>
+                        <IconButton className='cart-col-5' color='error' onClick={() => handleRemove(null)}>
                             <DeleteForeverOutlined />
                         </IconButton>
                     </Stack>
                     <Stack direction='row' alignItems='center'>
-                        <ProgessBar achieved={100}>
+                        <ProgessBar achieved={(totalPrice * 100 / 100000000 <= 100 ? totalPrice * 100 / 100000000 : 100)}>
                             <Marked position='first'>
                                 <Text location='bottom'>Buy</Text>
                             </Marked>
-                            <Marked position='end' achieved='true'>
-                                <Check color='success' sx={{ fontSize: '14px' }} />
+                            <Marked position='end' achieved={(totalPrice >= 50000000).toString()}>
+                                {totalPrice >= 50000000 && <Check color='success' sx={{ fontSize: '14px' }} />}
                                 <Text location='top'>-30K</Text>
                                 <Text location='bottom'>50M</Text>
                             </Marked>
-                            <Marked position='end' achieved='true'>
-                                <Check color='success' sx={{ fontSize: '14px' }} />
+                            <Marked position='end' achieved={(totalPrice >= 100000000).toString()}>
+                                {totalPrice >= 100000000 && <Check color='success' sx={{ fontSize: '14px' }} />}
                                 <Text location='top'>-50K</Text>
                                 <Text location='bottom'>100M</Text>
                             </Marked>
@@ -76,8 +105,11 @@ const CartList = () => {
                     <CartItem
                         key={item._id}
                         item={item}
+                        onChange={handleChange}
+                        onRemove={handleRemove}
                     />
                 ))}
+                {!cart && 'Loading...'}
             </Content>
         </RootStyle>
     );
@@ -165,5 +197,7 @@ const Text = styled('div')(({ theme, location }) => ({
     color: theme.palette.text.primary,
     fontWeight: '500'
 }));
+
+CartList.propTypes = propTypes;
 
 export default CartList;
