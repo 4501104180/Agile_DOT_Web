@@ -46,6 +46,7 @@ const propTypes = {
 const AuthContext = createContext({
     ...initialState,
     login: () => Promise.resolve(),
+    register: () => Promise.resolve(),
     logout: () => Promise.resolve()
 });
 
@@ -80,6 +81,9 @@ const AuthProvider = ({ children }) => {
             type: 'LOGIN'
         });
     };
+    const register = async (name, email, password, passwordConfirm) => {
+        return await accountApi.register(name, email, password, passwordConfirm);
+    };
     const logout = async () => {
         setToken(null);
         dispatch({
@@ -92,6 +96,7 @@ const AuthProvider = ({ children }) => {
             value={{
                 ...state,
                 login,
+                register,
                 logout
             }}
         >

@@ -12,6 +12,7 @@ const Router = () => (
                 <AuthLayout>
                     <Switch>
                         <Route path='/auth/login' exact component={Login} />
+                        <Route path='/auth/register' exact component={Register} />
                     </Switch>
                 </AuthLayout>
             </Route>
@@ -37,3 +38,4 @@ const NotFound = lazy(() => import('../pages/NotFound'));
 
 // Authentication
 const Login = lazy(() => import('../pages/authentication/Login'));
+const Register = lazy(() => import('../pages/authentication/Register'));

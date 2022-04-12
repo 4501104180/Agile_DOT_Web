@@ -47,7 +47,7 @@ const HeaderTop = () => {
                                 </Linking>
                                 <Linking
                                     component={RouterLink}
-                                    to='/path-to-register'
+                                    to={PATH_AUTH.register}
                                 >
                                     Sign up
                                 </Linking>
