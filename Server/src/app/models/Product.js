@@ -52,6 +52,10 @@ const Product = new Schema({
         type: Number,
         default: 0
     },
+    warranty: {
+        type: Array,
+        default: [],
+    },
     tags: {
         type: Array,
         default: []

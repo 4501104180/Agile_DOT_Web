@@ -21,6 +21,7 @@ const Router = () => (
                     <Switch>
                         <Route path='/' exact component={Home} />
                         <Route path='/cart' exact component={Cart} />
+                        <Route path='/:slugProduct/pid:slugId' exact render={props => <Detail {...props} key={Date.now()} />} />
                         <Route path='*' component={NotFound} />
                     </Switch>
                 </MainLayout>
@@ -35,6 +36,7 @@ export default Router;
 const Home = lazy(() => import('../pages/Home'));
 const Cart = lazy(() => import('../pages/Cart'));
 const NotFound = lazy(() => import('../pages/NotFound'));
+const Detail = lazy(() => import('../pages/product/Detail'));
 
 // Authentication
 const Login = lazy(() => import('../pages/authentication/Login'));
