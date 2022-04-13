@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import MaterialTable from '@material-table/core';
 import { Tooltip, Alert, Typography } from '@mui/material';
+import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { AddCircle, Edit, Delete } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useConfirm } from "material-ui-confirm";
@@ -75,7 +76,14 @@ const options = {
     selection: true,
     addRowPosition: 'first',
     actionsColumnIndex: -1,
-    tableLayout: 'fixed'
+    tableLayout: 'fixed',
+    exportMenu: [{
+        label: 'Export PDF',
+        exportFunc: (cols, datas) => ExportPdf(cols, datas, 'CategoryPdf')
+    }, {
+        label: 'Export CSV',
+        exportFunc: (cols, datas) => ExportCsv(cols, datas, 'CategoryCsv')
+    }]
     
 };
 
