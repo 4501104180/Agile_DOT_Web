@@ -3,17 +3,21 @@ import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 
+const propTypes = {
+    image: PropTypes.array
+};
+
 const ImageZoom = ({ images }) => {
     const [currentImage, setCurrentImage] = useState(0);
     return (
         <RootStyle>
-            <MainImage src={images[currentImage]} alt="" />
+            <MainImage src={ 'http://localhost:5000/images/' + images[currentImage]} alt="" />
             <Stack direction='row' spacing={1} sx={{ mt: '3px' }}>
                 {images && images.map((image, index) => (
                     <MoreImage
                         key={index}
                         className={index === currentImage ? 'active' : ''}
-                        src={image}
+                        src={'http://localhost:5000/images/' + image}
                         alt=""
                         onClick={() => setCurrentImage(index)}
                     />
@@ -55,5 +59,7 @@ const MoreImage = styled('img')({
         borderRadius: '5px'
     }
 });
+
+ImageZoom.propTypes = propTypes;
 
 export default ImageZoom;

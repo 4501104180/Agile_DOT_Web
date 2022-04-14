@@ -3,6 +3,10 @@ import { styled } from '@mui/material/styles';
 
 import Title from '../Title';
 
+const propTypes = {
+    information: PropTypes.array
+};
+
 const MoreInformation = ({ information }) => (
     <>
         <Title>More information</Title>
@@ -31,5 +35,7 @@ const Table = styled('table')(({ theme }) => ({
         padding: '15px'
     }
 }));
+
+MoreInformation.propTypes = propTypes;
 
 export default MoreInformation;

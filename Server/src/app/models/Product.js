@@ -56,6 +56,10 @@ const Product = new Schema({
         type: Array,
         default: [],
     },
+    information: {
+        type: Array,
+        default: [],
+    },
     tags: {
         type: Array,
         default: []

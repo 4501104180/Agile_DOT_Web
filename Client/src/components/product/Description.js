@@ -4,6 +4,10 @@ import { styled } from '@mui/material/styles';
 import Title from '../Title';
 import ToggleShowAll from '../ToggleShowAll';
 
+const propTypes = {
+    description: PropTypes.string
+};
+
 const Description = ({ description }) => (
     <>
         <Title>Product descriptions</Title>
@@ -20,5 +24,7 @@ const Content = styled('div')({
     overflow: 'hidden',
     transition: 'all 0.5s',
 });
+
+Description.propTypes = propTypes;
 
 export default Description;

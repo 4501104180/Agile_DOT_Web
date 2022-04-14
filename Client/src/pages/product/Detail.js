@@ -1,56 +1,46 @@
-import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, Fragment } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Container, Breadcrumbs, Typography, Stack } from '@mui/material';
-import { ImportContacts } from '@mui/icons-material';
+import { Container, Breadcrumbs, Typography, Stack, Skeleton, LinearProgress } from '@mui/material';
+import { ImportContacts, Article } from '@mui/icons-material';
+
 
 import Page from '../../components/Page';
 import { PATH_PAGE } from '../../routes/path';
 import Teleport from '../../components/Teleport';
 import { combineLink } from '../../components/ScrollToTop';
-import { HEADER_HEIGHT } from '../../constant';
 import {
     ImageZoom,
     Information,
     MoreInformation,
     Description
 } from '../../components/product';
-
-const products = [
-    {
-        _id: '1',
-        images: [
-            'https://salt.tikicdn.com/cache/400x400/ts/product/6b/f1/44/51f7a16a156e4f0a0c30ff6acdd45c18.jpg.webp',
-            'https://salt.tikicdn.com/cache/400x400/ts/product/9e/44/ea/2b7ba151d4de1904beca5a66d383dad4.jpg.webp',
-            'https://salt.tikicdn.com/cache/400x400/ts/product/e8/7d/21/8527dbc779f065684825fa44ae9d48e4.jpg.webp',
-            'https://salt.tikicdn.com/cache/400x400/ts/product/ea/f0/31/53c13846f5ecb0fdccc671c40e893076.jpg.webp',
-            
-        ],
-        name: 'Điện thoại iPhone 13 Pro Max 128GB - Hàng chính hãng',
-        slug: 'laptop-hp',
-        price: 33990000,
-        discount: 10,
-        quantity: 100,
-        warranty: [
-            '12','13','14',
-        ],
-        amount: 10,
-        viewed: 325,
-        searched: 225,
-        sold: 451,
-    },
-];
+import productApi from '../../apis/productApi';
 
 const actions = [
-    { icon: combineLink('information', <ImportContacts />), name: 'Product information' }
+    { icon: combineLink('information', <ImportContacts />), name: 'Product information' },
+    { icon: combineLink('more-information', <Article />), name: 'More information' },
 ];
 
 const Detail = () => {
+    const [product, setProduct] = useState(null);
+    const { slugProduct } = useParams();
+    useEffect(() => {
+        const getProduct = async () => {
+            try {
+                const product = await productApi.getProduct(slugProduct);
+                setProduct(product);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getProduct();
+    }, [slugProduct]);
     return (
-        <Page title={`Product | CV Shop`}>
+        <Page title={`${product ? product.name : ''} | CV Shop`}>
             <Container>
                 <Teleport actions={actions} />
-                {products && products.map(product => (
+                {product && (
                     <Fragment>
                         <StyledBreadcrumbs separator='›'>
                             <Link to={PATH_PAGE.home} style={{ fontSize: '15px' }}>
@@ -78,7 +68,52 @@ const Detail = () => {
                             <Description description={product.description} />
                         </Wrapper>
                     </Fragment>
-                ))}
+                )}
+
+                {!product && (
+                    <Fragment>
+                        <Wrapper>
+                            <Stack
+                                direction={{ xs: 'column', sm: 'row', lg: 'row' }}
+                                justifyContent='space-between'
+                            >
+                                <Stack spacing={1}>
+                                    <Skeleton variant="rectangular" width={410} height={360} />
+                                    <Stack direction='row' spacing={1}>
+                                        {[...Array(5)].map((_, index) => (
+                                            <Skeleton key={index} variant="rectangular" width={75} height={65} />
+                                        ))}
+                                    </Stack>
+                                </Stack>
+                                <Stack spacing={1} sx={{ width: 'calc(100% - 450px)' }}>
+                                    <Skeleton variant='text' height={50} />
+                                    <Skeleton variant='text' width={400} />
+                                    <Skeleton variant='rectangular' width={500} height={100} />
+                                    <Skeleton variant='text' width={400} />
+                                    <Skeleton variant='text' width={400} />
+                                    <Skeleton variant='text' width={400} />
+                                    <Skeleton variant='text' width={400} />
+                                    <Skeleton variant='text' width={400} />
+                                    <Stack direction='row' spacing={2}>
+                                        <Skeleton variant='rectangular' width={150} height={50} />
+                                        <Skeleton variant='rectangular' width={150} height={50} />
+                                    </Stack>
+                                </Stack>
+                            </Stack>
+                        </Wrapper>
+                        <Wrapper sx={{ display: 'flex' }}>
+                            {[...Array(5)].map((_, index) => (
+                                <Stack key={index} sx={{ p: 2 }} >
+                                    <Skeleton variant='rectangular' width={180} height={180} />
+                                    <Skeleton variant='text' height={45} />
+                                    <Skeleton variant='text' width={150} />
+                                    <Skeleton variant='text' width={130} />
+                                </Stack>
+                            ))}
+                        </Wrapper>
+                        <LinearProgress />
+                    </Fragment>
+                )}
             </Container>
         </Page>
     );
@@ -99,28 +134,5 @@ const StyledBreadcrumbs = styled(Breadcrumbs)({
         display: 'inline'
     }
 });
-
-const DiscoverMore = styled('div')(({ theme }) => ({
-    padding: '15px',
-    fontWeight: 'bold',
-    backgroundColor: theme.palette.background.paper,
-    position: 'sticky',
-    top: `calc(${HEADER_HEIGHT} + 10px)`,
-    zIndex: 99,
-    '&:before, &:after': {
-        content: '""',
-        position: 'absolute',
-        width: '100%',
-        height: '10px',
-        backgroundColor: theme.palette.background.default,
-        left: 0
-    },
-    '&:before': {
-        top: '-10px'
-    },
-    '&:after': {
-        bottom: '-10px'
-    }
-}));
 
 export default Detail;

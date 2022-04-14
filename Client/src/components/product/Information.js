@@ -1,9 +1,14 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Typography, Stack, Button } from '@mui/material';
 import { Favorite, AddShoppingCart, LocalShipping } from '@mui/icons-material';
 
 import { toVND } from '../../utils/formatMoney';
+
+const propTypes = {
+    product: PropTypes.object
+};
 
 const Information = ({ product }) => {
     const [input, setInput] = useState('1');
@@ -19,7 +24,6 @@ const Information = ({ product }) => {
                 {name}
             </Typography>
             <Stack direction='row' alignItems='center' sx={{ my: '3px' }}>
-                {/* {rating && rating.total > 0 && <Stars total={5} rating={rating.average} sx={{ fontSize: '16px' }} />} */}
                 <Typography variant='subtitle1' sx={{ mx: '5px', fontSize: '15px' }}>
                     {rating && rating.total > 0 && `(From ${rating.total} ratings) | `}
                     {sold !== 0 && `${sold} sold`}
@@ -60,7 +64,7 @@ const Information = ({ product }) => {
             </Stack>
             <Stack direction='row' alignItems='center' sx={{ my: 3 }}>
                 <ButtonQ
-                    className={`quantity-button `}
+                    className={`quantity-button ${parseInt(input) === 1 ? 'disabled' : ''}`}
                     onClick={() => setInput(parseInt(input) - 1)}
                 >-</ButtonQ>
                 <input
@@ -79,7 +83,6 @@ const Information = ({ product }) => {
                     variant='contained'
                     endIcon={<AddShoppingCart />}
                     color='error'
-                    // onClick={handleAddCart}
                 >
                     ADD TO CART
                 </Button>
@@ -129,5 +132,7 @@ const ButtonQ = styled('button')({
         border: '1px solid #2195f3'
     }
 });
+
+Information.propTypes = propTypes;
 
 export default Information;
