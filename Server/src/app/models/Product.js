@@ -13,7 +13,7 @@ const Product = new Schema({
         slug: 'name',
         unique: true
     },
-    categories: {
+    categoryId: {
         type: Array,
         required: true
     },

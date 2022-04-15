@@ -74,7 +74,7 @@ class ProductsAPI {
         page = parseInt(page);
         rating = parseInt(rating);
         let direction = 1;
-        const [fromStar, toStar] = rating ? [rating - 0.9, rating] : [0, 5];
+        // const [fromStar, toStar] = rating ? [rating - 0.9, rating] : [0, 5];
         const [fromPrice, toPrice] = price
             ? price.split("-").map((el) => Number(el))
             : [0, 99999999999];
@@ -96,11 +96,11 @@ class ProductsAPI {
         }
         const queries = {
             status: "active",
-            categoryId: categoryId,
-            "rating.average": {
-            $gte: fromStar,
-            $lte: toStar,
-            },
+            categoryId: categoryId.toString(),
+            // "rating.average": {
+            // $gte: fromStar,
+            // $lte: toStar,
+            // },
             price: {
             $gte: fromPrice,
             $lte: toPrice,

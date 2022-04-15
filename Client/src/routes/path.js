@@ -14,5 +14,6 @@ export const PATH_AUTH = {
 export const PATH_PAGE = {
     home: '/',
     cart: '/cart',
-    detail: '/:slugProduct'
+    detail: '/:slugProduct',
+    category: '/:slugCategory',
 };
