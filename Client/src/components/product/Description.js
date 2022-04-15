@@ -20,7 +20,7 @@ const Description = ({ description }) => (
 const Content = styled('div')({
     padding: '10px',
     marginBottom: '20px',
-    maxHeight: '400px',
+    //maxHeight: '400px',
     overflow: 'hidden',
     transition: 'all 0.5s',
 });
