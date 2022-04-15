@@ -9,6 +9,7 @@ import Page from '../../components/Page';
 import { PATH_PAGE } from '../../routes/path';
 import Teleport from '../../components/Teleport';
 import { combineLink } from '../../components/ScrollToTop';
+import ProductSection from '../../components/ProductSection';
 import {
     ImageZoom,
     Information,
@@ -66,6 +67,9 @@ const Detail = () => {
                         </Wrapper>
                         <Wrapper id='descriptions'>
                             <Description description={product.description} />
+                        </Wrapper>
+                        <Wrapper>
+                            <ProductSection sx={{ m: 0 }} id='similar-section' type='similar' _id={product._id} title="Similar products" />
                         </Wrapper>
                     </Fragment>
                 )}
