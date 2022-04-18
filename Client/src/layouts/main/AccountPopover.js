@@ -4,6 +4,7 @@ import { useHistory, Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Link, Stack, Divider, MenuItem, ListItemIcon } from '@mui/material';
 import { AssignmentIndOutlined, SwitchAccountOutlined, LogoutOutlined } from '@mui/icons-material';
+import { useSelector } from 'react-redux'
 
 import { PATH_AUTH, PATH_PAGE } from '../../routes/path';
 import AvatarBadge from '../../components/AvatarBadge';
@@ -27,6 +28,7 @@ const propTypes = {
 // ];
 
 const AccountPopover = ({ logout }) => {
+    const { user } = useSelector(state => state.user);
     const history = useHistory();
     const anchorNotify = useRef(null);
     const [openedPopover, setOpenedPopover] = useState(false);
@@ -53,7 +55,7 @@ const AccountPopover = ({ logout }) => {
                 onMouseEnter={popoverEnter}
                 onMouseLeave={popoverLeave}
             >
-                Welcome!, Huong &nbsp;
+                {user.email} &nbsp;
                 <i className="bi bi-caret-down"></i>
             </Label>
             <MainPopover
@@ -87,7 +89,7 @@ const AccountPopover = ({ logout }) => {
                         <ListItemIcon>
                             <AssignmentIndOutlined />
                         </ListItemIcon> 
-                        <Linking component={RouterLink} to={{ pathname: PATH_PAGE.profile }} target='_blank'>
+                        <Linking component={RouterLink} to={{ pathname: PATH_PAGE.profile }} target='_blank' >
                             My Profile
                         </Linking>
                     </MenuItem>

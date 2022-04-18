@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Avatar, Badge } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const propTypes = {
     status: PropTypes.string,
@@ -9,21 +10,24 @@ const propTypes = {
     sx: PropTypes.object
 };
 
-const AvatarBadge = ({ status, width, height, sx }) => (
-    <StatusBadge
-        overlap="circular"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        variant="dot"
-        status={status}
-        sx={{ width, height, ...sx }}
-    >
-        <Avatar
-            src="http://dotshop69.000webhostapp.com/Public/images/huong.png"
-            alt="Le Chinh Tue"
-            sx={{ width: '100%', height: '100%' }}
-        />
-    </StatusBadge>
-);
+const AvatarBadge = ({ status, width, height, sx }) => {
+    const { user } = useSelector(state => state.user);
+    return (
+        <StatusBadge
+            overlap="circular"
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            variant="dot"
+            status={status}
+            sx={{ width, height, ...sx }}
+        >
+            <Avatar
+                src={`${process.env.REACT_APP_IMAGE_URL}/${user.image}`}
+                alt="Le Chinh Tue"
+                sx={{ width: '100%', height: '100%' }}
+            />
+        </StatusBadge>
+    );
+};
 
 const StatusBadge = styled(Badge)(({ theme, status }) => ({
     '& .MuiBadge-badge': {

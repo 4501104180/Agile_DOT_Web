@@ -176,7 +176,7 @@ class AccountsAPI {
             const { accountID } = req.params;
             const { email, image, password, ...newBody } = req.body;
             const saltRounds = 10;
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            //const hashedPassword = await bcrypt.hash(password, saltRounds);
             const body = {
                 ...newBody
             };
@@ -186,12 +186,12 @@ class AccountsAPI {
             const _account = await Account
                 .findByIdAndUpdate(accountID, body, {
                     account: true,
-                    password: hashedPassword,
                 })
             res.json({
                 statusText: 'success',
                 message: 'Edit Success',
-                account: _account
+                account: _account,
+
             });
         } catch (error) {
             console.log(error);

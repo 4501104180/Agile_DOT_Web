@@ -21,6 +21,7 @@ const Router = () => (
                     <Switch>
                         <Route path='/' exact component={Home} />
                         <Route path='/cart' exact component={Cart} />
+                        <Route path='/profile' exact component={Profile} />
                         <Route path='/:slugProduct/pid:slugId' exact render={props => <Detail {...props} key={Date.now()} />} />
                         <Route path='/:slugCategory/cid:slugId' exact render={props => <Categories {...props} key={Date.now()} />} />
                         <Route path='*' component={NotFound} />
@@ -39,7 +40,7 @@ const Cart = lazy(() => import('../pages/Cart'));
 const Categories = lazy(() => import('../pages/Categories'));
 const NotFound = lazy(() => import('../pages/NotFound'));
 const Detail = lazy(() => import('../pages/product/Detail'));
-
+const Profile = lazy(() => import('../pages/AccountForm'));
 // Authentication
 const Login = lazy(() => import('../pages/authentication/Login'));
 const Register = lazy(() => import('../pages/authentication/Register'));

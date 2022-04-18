@@ -16,4 +16,5 @@ export const PATH_PAGE = {
     cart: '/cart',
     detail: '/:slugProduct',
     category: '/:slugCategory',
+    profile: '/profile',
 };

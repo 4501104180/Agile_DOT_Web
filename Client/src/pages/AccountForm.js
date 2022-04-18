@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import { Grid, Stack, Card, Typography, TextField, FormHelperText} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { FormikProvider, Form, useFormik } from 'formik';
@@ -6,33 +7,29 @@ import { useSelector } from 'react-redux'
 import accountApi from '../apis/accountApi';
 // upload
 import UploadSingleFile from '../components/upload/UploadSingleFile';
-import { useReducer } from 'react';
 // path
+import { PATH_PAGE } from '../routes/path';
 
 const AccountForm = () => {
+    const history = useHistory();
     const { user } = useSelector(state => state.user);
-    console.log(user);
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            password: user.password,
             name: user.name,
             image: user.image,
             phone: user.phone,
             address: user.address,
         },
-        onSubmit: async (values, {resetForm}) => {
-            const {password, name, image, phone, address} = values;
+        onSubmit: async (values) => {
+            const {name, image, phone, address} = values;
             var formData = new FormData();
-            formData.append('password', password);
             formData.append('name', name);
             formData.append('image', image.file);
             formData.append('phone', phone);
             formData.append('address', address);
-            let res = null;
-            res = await accountApi.edit(user._id, formData);
-            resetForm();
-
+            await accountApi.edit(user._id, formData);
+            history.push(PATH_PAGE.home);
         }
     });
     const { values, setFieldValue, getFieldProps, isSubmitting, touched, errors } = formik;
@@ -94,14 +91,6 @@ const AccountForm = () => {
                     <Grid item xs={12} md={8}>
                         <Card sx={{ p: 3 }}>
                             <Stack spacing={3}>
-                                <TextField
-                                    fullWidth
-                                    type='password'
-                                    label='Password'
-                                    {...getFieldProps('password')}
-                                    error={Boolean(touched.password && errors.password)}
-                                    helperText={touched.password && errors.password}
-                                />
                                 <TextField
                                     fullWidth
                                     label='Name'
