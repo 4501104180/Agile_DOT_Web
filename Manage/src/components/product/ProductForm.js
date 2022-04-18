@@ -58,6 +58,7 @@ const ProductForm = ({ isEdit, product }) => {
                     formData.append('images', image);
                 }
             });
+            formData.append('categoryId', 1);
             formData.append('price', price);
             formData.append('discount', discount);
             formData.append('quantity', quantity);

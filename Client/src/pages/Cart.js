@@ -8,12 +8,13 @@ import { PATH_PAGE } from '../routes/path';
 import { CartList, TotalPrice } from '../components/cart';
 
 const Cart = () => {
+    const { user } = useSelector(state => state.user);
     const { totalItem, cart } = useSelector(state => state.cart);
     return (
-        <Page title='Cart | DOT Shop'>
+        <Page title='Cart | CV Shop'>
             <Container className="wide-container">
                 <Breadcrumbs separator='›' sx={{ pb: '5px' }}>
-                    <Link to='/' style={{ fontSize: '15px' }}>
+                    <Link to={PATH_PAGE.home} style={{ fontSize: '15px' }}>
                         Home
                     </Link>
                     <Typography fontSize='15px' color='text.primary'>
@@ -24,7 +25,7 @@ const Cart = () => {
                 {/* Events start */}
                 <Alert severity="info">
                     <AlertTitle>Promotional events</AlertTitle>
-                    Free shipping for orders from 50M <strong>(1/1/2021 - 1/1/2022)</strong>
+                    Free shipping for orders from 50M <strong>(11/1/2021 - 12/31/2021)</strong>
                 </Alert>
                 {/* Events end */}
 
@@ -37,7 +38,7 @@ const Cart = () => {
                         justifyContent='space-between'
                     >
                         <CartList totalItem={totalItem} cart={cart} />
-                        <TotalPrice cart={cart} />
+                        <TotalPrice user={user} cart={cart} />
                     </Stack>
                 )}
                 {totalItem === 0 && (

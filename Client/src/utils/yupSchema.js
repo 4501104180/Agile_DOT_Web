@@ -37,3 +37,13 @@ export const registerSchema = yup.object().shape({
         .oneOf([yup.ref('password'), null], 'Password must match')
         .required('This field is required!')
 });
+
+export const shippingSchema = yup.object().shape({
+    phone: yup
+        .string()
+        .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, 'This field required phone!')
+        .required('This field is required!'),
+    address: yup
+        .string()
+        .required('This field is required!')
+});

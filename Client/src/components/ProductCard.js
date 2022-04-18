@@ -51,7 +51,7 @@ const ProductCard = ({ product }) => {
                     <Image
                         component="img"
                         height="200"
-                        src={"http://localhost:5000/images/" + images[0]}
+                        src={`${process.env.REACT_APP_IMAGE_URL}/${images[0]}`}
                         alt='Image...'
                         className='lazyload'
                     />

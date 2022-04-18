@@ -47,7 +47,7 @@ class AccountsAPI {
     // [PATCH] /accounts/profile
     async editProfile(req, res) {
         const account = await Account
-            .findByIdAndUpdate(req.user._id, req.body, {
+            .findByIdAndUpdate(req.account._id, req.body, {
                 new: true
             });
         res.json({
