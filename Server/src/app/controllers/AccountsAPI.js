@@ -39,7 +39,7 @@ class AccountsAPI {
     // [GET] /accounts/profile
     async getProfile(req, res) {
         const account = await Account
-            .findOne({ _id: req.user._id });
+            .findOne({ _id: req.account._id });
         const { password, ...user } = account.toObject();
         res.json(user);
     };

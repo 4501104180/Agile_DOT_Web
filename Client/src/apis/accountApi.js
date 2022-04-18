@@ -7,6 +7,12 @@ const accountApi = {
         return axiosInstance.get(url);
     },
 
+    // [GET] /accounts/profile
+    getProfile: () => {
+        const url = '/accounts/profile';
+        return axiosInstance.get(url);
+    },
+
     // [POST] /accounts/login
     login: (email, password) => {
         const url = '/accounts/login';
@@ -25,7 +31,11 @@ const accountApi = {
             password,
             passwordConfirm
         });
-    }
+    },
+    edit: (id, body) => {
+        const url = `/accounts/${id}`;
+        return axiosInstance.put(url, body);
+    },
 };
 
 export default accountApi;

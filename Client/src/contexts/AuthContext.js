@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 // apis
 import accountApi from '../apis/accountApi';
 // slices
+import { getProfile, removeUser } from '../redux/slices/user';
 import { getCart, deleteCart } from '../redux/slices/cart';
 // utils
 import { getToken, setToken, isValidToken } from '../utils/jwt';
@@ -60,6 +61,7 @@ const AuthProvider = ({ children }) => {
                 setToken(tokens);
                 const isAuthenticated = await isValidToken(tokens);
                 if (isAuthenticated) {
+                    await dispatchSlice(getProfile());
                     await dispatchSlice(getCart());
                 }
                 dispatch({
@@ -76,6 +78,7 @@ const AuthProvider = ({ children }) => {
         const res = await accountApi.login(email, password);
         const { tokens } = res;
         setToken(tokens);
+        await dispatchSlice(getProfile());
         await dispatchSlice(getCart());
         dispatch({
             type: 'LOGIN'
@@ -89,6 +92,7 @@ const AuthProvider = ({ children }) => {
         dispatch({
             type: 'LOGOUT'
         });
+        dispatchSlice(removeUser());
         dispatchSlice(deleteCart());
     };
     return (

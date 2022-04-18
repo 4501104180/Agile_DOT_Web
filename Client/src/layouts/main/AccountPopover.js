@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Stack, Divider, MenuItem, ListItemIcon } from '@mui/material';
-import { AssignmentIndOutlined, AssignmentOutlined, SwitchAccountOutlined, LogoutOutlined } from '@mui/icons-material';
+import { Link, Stack, Divider, MenuItem, ListItemIcon } from '@mui/material';
+import { AssignmentIndOutlined, SwitchAccountOutlined, LogoutOutlined } from '@mui/icons-material';
 
-import { PATH_AUTH } from '../../routes/path';
+import { PATH_AUTH, PATH_PAGE } from '../../routes/path';
 import AvatarBadge from '../../components/AvatarBadge';
 import MainPopover from '../../components/MainPopover';
 
@@ -13,18 +13,18 @@ const propTypes = {
     logout: PropTypes.func
 };
 
-const MENU_OPTIONS = [
-    {
-        label: 'My Profile',
-        icon: <AssignmentIndOutlined />,
-        linkTo: '/profile'
-    },
-    {
-        label: 'My Ordered',
-        icon: <AssignmentOutlined />,
-        linkTo: '/ordered'
-    }
-];
+// const MENU_OPTIONS = [
+//     {
+//         label: 'My Profile',
+//         icon: <AssignmentIndOutlined />,
+//         linkTo: '/profile'
+//     },
+//     {
+//         label: 'My Ordered',
+//         icon: <AssignmentOutlined />,
+//         linkTo: '/ordered'
+//     }
+// ];
 
 const AccountPopover = ({ logout }) => {
     const history = useHistory();
@@ -75,14 +75,22 @@ const AccountPopover = ({ logout }) => {
                         height={70}
                         sx={{ mb: 2, mx: 'auto' }}
                     />
-                    {MENU_OPTIONS.map(menu => (
+                    {/* {MENU_OPTIONS.map(menu => (
                         <MenuItem key={menu.label} sx={{ fontSize: '14px' }}>
                             <ListItemIcon>
                                 {menu.icon}
                             </ListItemIcon>
                             {menu.label}
                         </MenuItem>
-                    ))}
+                    ))} */}
+                     <MenuItem  sx={{ fontSize: '14px' }}>
+                        <ListItemIcon>
+                            <AssignmentIndOutlined />
+                        </ListItemIcon> 
+                        <Linking component={RouterLink} to={{ pathname: PATH_PAGE.profile }} target='_blank'>
+                            My Profile
+                        </Linking>
+                    </MenuItem>
                     <Divider />
                     <MenuItem onClick={() => handleLogout('switch')} sx={{ fontSize: '14px' }}>
                         <ListItemIcon>
@@ -101,7 +109,16 @@ const AccountPopover = ({ logout }) => {
         </>
     );
 };
+const Linking = styled(Link)(({ theme }) => ({
+    color: theme.palette.text.primary,
+    textDecoration: 'none',
+    padding: '0px 10px',
+    fontWeight: '500',
+    transition: '0.3s',
+    fontSize: '13px',
+    borderBottom: '1px solid transparent',
 
+}));
 const Label = styled('span')({
     padding: '0px 10px',
     fontWeight: '500',
