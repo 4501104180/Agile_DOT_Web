@@ -51,7 +51,15 @@ const Router = () => {
                         { path: 'new', element: <ProductCreate /> },
                         { path: 'edit/:productSlug', element: <ProductCreate /> }
                     ]
-                }
+                },
+                {
+                    path: "order",
+                    children: [
+                      { path: "", element: <Navigate to="/order/list" replace /> },
+                      { path: "list", element: <Orders /> },
+                      { path: ":orderId", element: <OrderDetail /> }
+                    ],
+                },
             ]
         }
     ]);
@@ -74,3 +82,6 @@ const AccountCreate = Loadable(
 // Product
 const Products = Loadable(lazy(() => import('../pages/product/Products')));
 const ProductCreate = Loadable(lazy(() => import('../pages/product/ProductCreate')));
+// Order
+const Orders = Loadable(lazy(() => import("../pages/order/Orders")));
+const OrderDetail = Loadable(lazy(() => import("../pages/order/OrderDetail")));

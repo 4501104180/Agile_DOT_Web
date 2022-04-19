@@ -6,6 +6,8 @@ const ROOT_DASHBOARD = '/dashboard';
 const ROOT_CATEGORY = '/category';
 const ROOT_ACCOUNT = '/account';
 const ROOT_PRODUCT = '/product';
+const ROOT_ORDER = '/order';
+
 export const PATH_DASHBOARD = {
     root: ROOT_DASHBOARD,
     category: {
@@ -24,5 +26,9 @@ export const PATH_DASHBOARD = {
         list: path(ROOT_PRODUCT, '/list'),
         edit: path(ROOT_PRODUCT, '/edit'),
         create: path(ROOT_PRODUCT, '/new')
+    },
+    order: {
+        root: ROOT_ORDER,
+        list: path(ROOT_ORDER, '/list')
     }
 };

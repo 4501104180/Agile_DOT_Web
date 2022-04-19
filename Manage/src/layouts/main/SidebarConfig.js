@@ -2,7 +2,8 @@ import {
     Dashboard,
     Category,
     AssignmentInd,
-    ProductionQuantityLimits
+    ProductionQuantityLimits,
+    AttachMoney
 } from '@mui/icons-material';
 // path
 import { PATH_DASHBOARD } from '../../routes/path';
@@ -11,7 +12,8 @@ const ICONS = {
     dashboard: <Dashboard />,
     category: <Category />,
     account: <AssignmentInd />,
-    product: <ProductionQuantityLimits />
+    product: <ProductionQuantityLimits />,
+    order: <AttachMoney />
 };
 
 const SIDEBAR_CONFIG = [
@@ -53,6 +55,14 @@ const SIDEBAR_CONFIG = [
                 children: [
                     { title: 'list', path: PATH_DASHBOARD.product.list },
                     { title: 'create', path: PATH_DASHBOARD.product.create }
+                ]
+            },
+            {
+                title: 'order',
+                path: PATH_DASHBOARD.order.root,
+                icon: ICONS.order,
+                children: [
+                    { title: 'list', path: PATH_DASHBOARD.order.list }
                 ]
             }
         ]
